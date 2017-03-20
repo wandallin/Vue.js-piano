@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>A Pen by  wandallin</title>
+  
+  
+  <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+  
+<div id="app">  
+  <div class="center_box">
+    <div class="keyboard">
+      <div class="pianokey" v-for="s in display_keys">
+        <div class="white" v-if="s.type=='white'" v-on:click="addnote(s.num)" v-bind:class="get_current_hightlight(s.num, s.key)?&quot;playing&quot;:&quot;&quot;"> 
+          <div class="label">{{String.fromCharCode(s.key)}}</div>
+        </div>
+        <div class="black" v-if="s.type=='black'" v-on:click="addnote(s.num)" v-bind:class="get_current_hightlight(s.num, s.key)?&quot;playing&quot;:&quot;&quot;"> 
+          <div class="label">{{String.fromCharCode(s.key)}}</div>
+        </div>
+      </div>
+    </div><br/>
+    <h2>{{title}}</h2><br/>
+    <div class="controls">
+      <ul class="notes_list" v-if="notes.length&gt;0">
+        <li v-for="(note ,id) in notes" v-bind:class="now_note_id-1==id?&quot;playing&quot;:&quot;&quot;">
+          <div class="num">{{note.num}}</div>
+          <div class="time">{{note.time}}</div>
+        </li>
+      </ul>
+      <button v-on:click="load_sample">Sample</button>
+      <button v-on:click="playnext(1)">playnext</button>
+      <button v-if="playing_time&lt;=1" v-on:click="startplay">startplay<i class="fa fa-play"></i></button>
+      <button v-if="playing_time&gt;=1" v-on:click="stopplay">stopplay<i class="fa fa-pause"></i></button>
+      <button v-if="record_time&lt;=1" v-on:click="startrecord">Record<i class="fa fa-circle"></i></button>
+      <button v-if="record_time&gt;=1" v-on:click="stoprecord"> stopRecord<i class="fa fa-stop"></i></button>
+      <button v-on:click="notes=[]">Clear</button><br/>
+    </div>
+    <div class="add">
+      <input class="text" type="text" v-model="inputname" placeholder="輸入你想儲存的名字"/>
+      <button v-on:click="saveRecord">儲存</button>
+      <button v-on:click="loadRecode">讀取紀錄清單</button>
+      <h4>{{playing_time+record_time}}</h4>
+      <hr v-if="getRecord.length != 0"/>
+      <h2 v-if="getRecord.length != 0">儲存歌單</h2>
+      <div class="recordlist" v-for="record in getRecord" v-on:click="load_record(record.data, record.name)">{{record.name}}</div>
+    </div>
+  </div>
+  <div class="audioplayer" v-for="s in sounddata">
+    <audio v-bind:data-num="s.number">
+      <source v-bind:src="s.url" type="audio/ogg"/>
+    </audio>
+  </div>
+</div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.js'></script>
+<script src='https://www.gstatic.com/firebasejs/3.7.2/firebase.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.7/uuid.js'></script>
+
+    <script src="js/index.js"></script>
+
+</body>
+</html>
